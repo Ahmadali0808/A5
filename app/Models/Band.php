@@ -16,5 +16,17 @@ class Band extends Model
         'photo',
         'background_color',
         'text_color',
+
+        
     ];
+     public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    // One-to-many: een band heeft meerdere video's
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
 }

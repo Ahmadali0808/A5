@@ -46,4 +46,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+     public function bands()
+    {
+        return $this->belongsToMany(Band::class);
+    }
 }
