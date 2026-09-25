@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Band;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BandController extends Controller
 {
@@ -21,9 +22,14 @@ class BandController extends Controller
     }
 
     // Nieuwe band opslaan
+
     public function store(Request $request)
     {
         $data = $this->validateBand($request);
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('photos', 'public');
+        }
 
         $band = Band::create($data);
         $band->users()->attach($request->user()->id); // maker wordt beheerder
@@ -43,8 +49,16 @@ class BandController extends Controller
     public function update(Request $request, Band $band)
     {
         $this->checkManager($request, $band);
+        $data = $this->validateBand($request);
 
-        $band->update($this->validateBand($request));
+        if ($request->hasFile('photo')) {
+            if ($band->photo) {
+                Storage::disk('public')->delete($band->photo); // oude foto weg
+            }
+            $data['photo'] = $request->file('photo')->store('photos', 'public');
+        }
+
+        $band->update($data);
 
         return redirect()->route('home')->with('status', 'Band is aangepast.');
     }
@@ -54,6 +68,9 @@ class BandController extends Controller
     {
         $this->checkManager($request, $band);
 
+        if ($band->photo) {
+            Storage::disk('public')->delete($band->photo);
+        }
         $band->delete(); // videos en koppelingen gaan mee (cascade)
 
         return redirect()->route('home')->with('status', 'Band is verwijderd.');
@@ -78,10 +95,12 @@ class BandController extends Controller
 
     private function validateBand(Request $request): array
     {
-        return $request->validate([
+
+            return $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'biography' => 'nullable|string',
+            'photo' => 'nullable|image|max:2048',
         ]);
     }
 

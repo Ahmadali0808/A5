@@ -3,8 +3,9 @@
 @section('content')
 <div class="container">
     <div class="text-center">
-        {{-- Hier komt in stap 12 de foto --}}
-
+        @if ($band->photo)
+    <img src="{{ asset('storage/' . $band->photo) }}" alt="{{ $band->name }}" class="img-fluid rounded mb-4" style="max-height: 400px">
+    @endif
         <h1>{{ $band->name }}</h1>
         <p class="lead">{{ $band->description }}</p>
     </div>
