@@ -34,7 +34,11 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto">  
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('bands.index') }}">Bands zoeken</a>
+                        </li>
+                    
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -56,7 +60,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('home') }}">Dashboard</a>
-<a class="dropdown-item" href="{{ route('profile.edit') }}">Mijn gegevens</a>
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">Mijn gegevens</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

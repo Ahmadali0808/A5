@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Storage;
 
 class BandController extends Controller
 {
+
+    // Gast: overzicht van bands + zoeken op bandnaam
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+
+        $bands = Band::when($search, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        })->orderBy('name')->get();
+
+        return view('bands.index', compact('bands', 'search'));
+    }
     // Gast: de EPK pagina van één band
     public function show(Band $band)
     {

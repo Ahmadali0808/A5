@@ -6,9 +6,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Gast: overzicht van bands en zoeken
+Route::get('/', [BandController::class, 'index'])->name('bands.index');
+Route::get('/bands', [BandController::class, 'index']);
 
 // Login, registreren, uitloggen
 Auth::routes();
