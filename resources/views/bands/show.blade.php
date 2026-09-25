@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('body-style', 'background-color: ' . $band->background_color . '; color: ' . $band->text_color . ';')
 @section('content')
 <div class="container">
     <div class="text-center">

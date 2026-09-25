@@ -32,7 +32,20 @@
     @endif
     <input type="file" id="photo" name="photo" class="form-control" accept="image/*">
 </div>
-
+<div class="row mb-3">
+    <div class="col">
+        <label for="background_color" class="form-label">Achtergrondkleur</label>
+        <input type="color" id="background_color" name="background_color"
+               class="form-control form-control-color"
+               value="{{ old('background_color', $band->background_color ?? '#ffffff') }}">
+    </div>
+    <div class="col">
+        <label for="text_color" class="form-label">Tekstkleur</label>
+        <input type="color" id="text_color" name="text_color"
+               class="form-control form-control-color"
+               value="{{ old('text_color', $band->text_color ?? '#000000') }}">
+    </div>
+</div>
 <h5 class="mt-4">YouTube video's (maximaal {{ \App\Models\Band::MAX_VIDEOS }})</h5>
 @for ($i = 0; $i < \App\Models\Band::MAX_VIDEOS; $i++)
     <div class="mb-2">

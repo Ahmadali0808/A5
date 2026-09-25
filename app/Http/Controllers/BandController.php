@@ -106,6 +106,8 @@ class BandController extends Controller
             'description' => 'required|string|max:255',
             'biography' => 'nullable|string',
             'photo' => 'nullable|image|max:2048',
+            'background_color' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'text_color' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'videos' => 'nullable|array|max:' . Band::MAX_VIDEOS,
             'videos.*' => ['nullable', 'url', 'regex:/(youtube\.com|youtu\.be)/'],
         ]);
