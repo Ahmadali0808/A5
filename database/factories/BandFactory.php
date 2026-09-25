@@ -15,10 +15,15 @@ class BandFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+       public function definition(): array
     {
         return [
-            //
+            'name' => fake()->unique()->words(2, true),
+            'description' => fake()->sentence(),
+            'biography' => fake()->paragraph(),
+            'photo' => null,
+            'background_color' => '#ffffff',
+            'text_color' => '#000000',
         ];
     }
 }
