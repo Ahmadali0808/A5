@@ -13,6 +13,7 @@
         @method('PUT')
         @include('bands._form')
         <button type="submit" class="btn btn-primary">Opslaan</button>
+        <a href="{{ route('bands.show', $band) }}" class="btn btn-outline-secondary">EPK bekijken</a>
     </form>
 
     <hr class="my-5">

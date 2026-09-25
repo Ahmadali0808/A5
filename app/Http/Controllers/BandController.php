@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class BandController extends Controller
 {
+
+    // Gast: de EPK pagina van één band
+    public function show(Band $band)
+    {
+        return view('bands.show', compact('band'));
+    }
     // Formulier nieuwe band
     public function create()
     {

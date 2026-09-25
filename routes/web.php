@@ -27,3 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bands/{band}', [BandController::class, 'destroy'])->name('bands.destroy');
     Route::post('/bands/{band}/users', [BandController::class, 'addUser'])->name('bands.users.add');
 });
+// Gast: de EPK pagina van een band
+// (onderaan, anders denkt Laravel dat /bands/create een band met id "create" is)
+Route::get('/bands/{band}', [BandController::class, 'show'])->name('bands.show');

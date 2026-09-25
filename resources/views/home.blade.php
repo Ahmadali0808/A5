@@ -24,7 +24,7 @@
             <tbody>
             @foreach ($bands as $band)
            <tr>
-    <td>{{ $band->name }}</td>
+    <td><a href="{{ route('bands.show', $band) }}">{{ $band->name }}</a></td>
     <td>{{ $band->description }}</td>
     <td class="text-end">
         <a href="{{ route('bands.edit', $band) }}" class="btn btn-sm btn-outline-secondary">Aanpassen</a>
