@@ -29,4 +29,9 @@ class Band extends Model
     {
         return $this->hasMany(Video::class);
     }
+        // Controleert of een gebruiker deze band mag beheren
+    public function isManagedBy(?User $user): bool
+    {
+        return $user !== null && $this->users()->where('users.id', $user->id)->exists();
+    }
 }
