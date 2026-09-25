@@ -13,6 +13,19 @@
     <h2 class="mt-4">Biografie</h2>
     <p style="white-space: pre-line">{{ $band->biography }}</p>
 
-    {{-- Hier komen in stap 13 de video's --}}
+    @if ($band->videos->isNotEmpty())
+    <h2 class="mt-4">Video's</h2>
+    <div class="row">
+        @foreach ($band->videos as $video)
+            @if ($video->embedUrl())
+                <div class="col-md-6 mb-4">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="{{ $video->embedUrl() }}" title="YouTube video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    </div>
+@endif
 </div>
 @endsection

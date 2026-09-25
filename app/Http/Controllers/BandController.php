@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class BandController extends Controller
 {
-
     // Gast: de EPK pagina van één band
     public function show(Band $band)
     {
+        $band->load('videos');
+
         return view('bands.show', compact('band'));
     }
+
     // Formulier nieuwe band
     public function create()
     {
@@ -22,10 +24,10 @@ class BandController extends Controller
     }
 
     // Nieuwe band opslaan
-
     public function store(Request $request)
     {
         $data = $this->validateBand($request);
+        unset($data['photo'], $data['videos']);
 
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('photos', 'public');
@@ -33,6 +35,7 @@ class BandController extends Controller
 
         $band = Band::create($data);
         $band->users()->attach($request->user()->id); // maker wordt beheerder
+        $this->saveVideos($band, $request->input('videos', []));
 
         return redirect()->route('home')->with('status', 'Band is aangemaakt.');
     }
@@ -41,6 +44,7 @@ class BandController extends Controller
     public function edit(Request $request, Band $band)
     {
         $this->checkManager($request, $band);
+        $band->load('videos', 'users');
 
         return view('bands.edit', compact('band'));
     }
@@ -50,6 +54,7 @@ class BandController extends Controller
     {
         $this->checkManager($request, $band);
         $data = $this->validateBand($request);
+        unset($data['photo'], $data['videos']); // foto alleen aanpassen als er een nieuwe is
 
         if ($request->hasFile('photo')) {
             if ($band->photo) {
@@ -59,6 +64,7 @@ class BandController extends Controller
         }
 
         $band->update($data);
+        $this->saveVideos($band, $request->input('videos', []));
 
         return redirect()->route('home')->with('status', 'Band is aangepast.');
     }
@@ -95,13 +101,24 @@ class BandController extends Controller
 
     private function validateBand(Request $request): array
     {
-
-            return $request->validate([
+        return $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'biography' => 'nullable|string',
             'photo' => 'nullable|image|max:2048',
+            'videos' => 'nullable|array|max:' . Band::MAX_VIDEOS,
+            'videos.*' => ['nullable', 'url', 'regex:/(youtube\.com|youtu\.be)/'],
         ]);
+    }
+
+    // Alle oude video's weghalen en de ingevulde links opnieuw opslaan
+    private function saveVideos(Band $band, array $urls): void
+    {
+        $band->videos()->delete();
+
+        foreach (array_filter($urls) as $url) {
+            $band->videos()->create(['youtube_url' => $url]);
+        }
     }
 
     // Alleen beheerders van deze band mogen hem aanpassen

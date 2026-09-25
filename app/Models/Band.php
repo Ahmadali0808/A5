@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Band extends Model
 {
     use HasFactory;
+        // Maximaal aantal video's per band.
+    // De opdrachtgever twijfelt tussen 3 en 4: alleen dit getal aanpassen is genoeg.
+    public const MAX_VIDEOS = 3;
 
     protected $fillable = [
         'name',

@@ -32,3 +32,12 @@
     @endif
     <input type="file" id="photo" name="photo" class="form-control" accept="image/*">
 </div>
+
+<h5 class="mt-4">YouTube video's (maximaal {{ \App\Models\Band::MAX_VIDEOS }})</h5>
+@for ($i = 0; $i < \App\Models\Band::MAX_VIDEOS; $i++)
+    <div class="mb-2">
+        <input type="url" name="videos[{{ $i }}]" class="form-control"
+               placeholder="https://www.youtube.com/watch?v=..."
+               value="{{ old('videos.' . $i, $band->videos[$i]->youtube_url ?? '') }}">
+    </div>
+@endfor
